@@ -20,7 +20,7 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class CamundaMetricsProcessEnginePlugin implements ProcessEnginePlugin {
 
-    private final MeterRegistry meterRegistry;
+//    private final MeterRegistry meterRegistry;
     private final MetricsBpmnParseListener metricsBpmnParseListener;
 
     @Override

@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
  * student of ITIS KFU
  */
 @AllArgsConstructor
-public enum ProvidedMetricTagKey {
+public enum TagKey {
 
     // process definition
     PROCESS_KEY("process_key"),
@@ -16,7 +16,9 @@ public enum ProvidedMetricTagKey {
 
     // activity
     ACTIVITY_NAME("activity_name"),
-    ACTIVITY_ID("activity_id");
+    ACTIVITY_ID("activity_id"),
+
+    METRIC_TYPE("metric_type");
 
     private String key;
 

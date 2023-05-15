@@ -6,8 +6,8 @@ import ru.badmoon.camunda.metrics.provider.ExecutionTagProvider;
 
 import java.util.List;
 
-import static ru.badmoon.camunda.metrics.dictionary.ProvidedMetricTagKey.PROCESS_KEY;
-import static ru.badmoon.camunda.metrics.dictionary.ProvidedMetricTagKey.PROCESS_VERSION;
+import static ru.badmoon.camunda.metrics.dictionary.TagKey.PROCESS_KEY;
+import static ru.badmoon.camunda.metrics.dictionary.TagKey.PROCESS_VERSION;
 
 /**
  * @author Anvar Khasanov

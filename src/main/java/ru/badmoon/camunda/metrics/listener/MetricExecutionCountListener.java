@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Getter
 @RequiredArgsConstructor
-public class MetricExecutionListener implements ExecutionListener {
+public class MetricExecutionCountListener implements ExecutionListener {
 
     protected final Event event;
     protected final Metric metric;

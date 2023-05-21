@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Lazy;
 import ru.badmoon.camunda.metrics.core.CamundaCoreMeterBinder;
 import ru.badmoon.camunda.metrics.core.MeterFactory;
 import ru.badmoon.camunda.metrics.engine.ProcessEngineQueryService;
+import ru.badmoon.camunda.metrics.provider.ProcessDefinitionTagProvider;
 
 /**
  * @author Anvar Khasanov
@@ -28,8 +29,9 @@ public class CamundaMetricConfiguration {
     }
 
     @Bean
-    public MeterBinder camundaCoreMeterBinder(ProcessEngineQueryService queryService) {
-        return new CamundaCoreMeterBinder(queryService);
+    public MeterBinder camundaCoreMeterBinder(ProcessEngineQueryService queryService,
+                                              ProcessDefinitionTagProvider provider) {
+        return new CamundaCoreMeterBinder(queryService, provider);
     }
 
 }

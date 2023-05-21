@@ -1,10 +1,12 @@
 package ru.badmoon.camunda.metrics.config;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.badmoon.camunda.metrics.provider.ExecutionTagProvider;
-import ru.badmoon.camunda.metrics.provider.impl.ActivityTagProvider;
-import ru.badmoon.camunda.metrics.provider.impl.ProcessDefinitionTagProvider;
+import ru.badmoon.camunda.metrics.provider.ActivityTagProvider;
+import ru.badmoon.camunda.metrics.provider.ProcessDefinitionTagProvider;
+import ru.badmoon.camunda.metrics.provider.impl.DefaultActivityTagProvider;
+import ru.badmoon.camunda.metrics.provider.impl.DefaultProcessDefinitionTagProvider;
 
 /**
  * @author Anvar Khasanov
@@ -14,13 +16,15 @@ import ru.badmoon.camunda.metrics.provider.impl.ProcessDefinitionTagProvider;
 public class ExecutionTagProvidersConfiguration {
 
     @Bean
-    public ExecutionTagProvider activityTagProvider() {
-        return new ActivityTagProvider();
+    @ConditionalOnMissingBean
+    public ActivityTagProvider activityTagProvider() {
+        return new DefaultActivityTagProvider();
     }
 
     @Bean
-    public ExecutionTagProvider processDefinitionTagProvider() {
-        return new ProcessDefinitionTagProvider();
+    @ConditionalOnMissingBean
+    public ProcessDefinitionTagProvider processDefinitionTagProvider() {
+        return new DefaultProcessDefinitionTagProvider();
     }
 
 }

@@ -36,4 +36,11 @@ public class MeterFactory {
                 .register(meterRegistry);
     }
 
+    public <T> Gauge buildDurationTimer(Metric metric, List<Tag> tags, T type, ToDoubleFunction<T> func) {
+        return Gauge.builder(metric.getName(), type, func)
+                .description(metric.getDescription())
+                .tags(tags)
+                .register(meterRegistry);
+    }
+
 }

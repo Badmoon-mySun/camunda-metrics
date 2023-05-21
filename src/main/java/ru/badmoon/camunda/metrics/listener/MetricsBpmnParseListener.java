@@ -21,11 +21,11 @@ import java.util.stream.Collectors;
 @Component
 public class MetricsBpmnParseListener extends AbstractBpmnParseListener {
 
-    private final Map<Metric, MetricExecutionListener> executionListenerMap;
+    private final Map<Metric, MetricExecutionCountListener> executionListenerMap;
 
-    public MetricsBpmnParseListener(List<MetricExecutionListener> executionListeners) {
+    public MetricsBpmnParseListener(List<MetricExecutionCountListener> executionListeners) {
         executionListenerMap = executionListeners.stream()
-                .collect(Collectors.toMap(MetricExecutionListener::getMetric, Function.identity()));
+                .collect(Collectors.toMap(MetricExecutionCountListener::getMetric, Function.identity()));
     }
 
     protected void addMetricListener(Metric metric, ActivityImpl activity) {

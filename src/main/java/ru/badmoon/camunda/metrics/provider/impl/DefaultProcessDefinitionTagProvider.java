@@ -2,7 +2,8 @@ package ru.badmoon.camunda.metrics.provider.impl;
 
 import io.micrometer.core.instrument.Tag;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
-import ru.badmoon.camunda.metrics.provider.ExecutionTagProvider;
+import org.camunda.bpm.engine.repository.ProcessDefinition;
+import ru.badmoon.camunda.metrics.provider.ProcessDefinitionTagProvider;
 
 import java.util.List;
 
@@ -13,14 +14,10 @@ import static ru.badmoon.camunda.metrics.dictionary.TagKey.PROCESS_VERSION;
  * @author Anvar Khasanov
  * student of ITIS KFU
  */
-public class ProcessDefinitionTagProvider implements ExecutionTagProvider {
+public class DefaultProcessDefinitionTagProvider implements ProcessDefinitionTagProvider {
 
     @Override
-    public List<Tag> getTags(DelegateExecution execution) {
-        var definitionId = execution.getProcessDefinitionId();
-        var definition = execution.getProcessEngineServices()
-                .getRepositoryService().getProcessDefinition(definitionId);
-
+    public List<Tag> getProcessDefinitionTag(ProcessDefinition definition) {
         return List.of(
                 PROCESS_KEY.toTag(definition.getKey()),
                 PROCESS_VERSION.toTag(String.valueOf(definition.getVersion()))

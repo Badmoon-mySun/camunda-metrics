@@ -3,7 +3,6 @@ package ru.badmoon.camunda.metrics.provider.impl;
 import io.micrometer.core.instrument.Tag;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import ru.badmoon.camunda.metrics.provider.ActivityTagProvider;
-import ru.badmoon.camunda.metrics.provider.ExecutionTagProvider;
 
 import java.util.List;
 

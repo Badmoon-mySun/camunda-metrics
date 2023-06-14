@@ -1,6 +1,7 @@
 package ru.badmoon.camunda.metrics.listener;
 
 import org.camunda.bpm.engine.impl.bpmn.parser.AbstractBpmnParseListener;
+import org.camunda.bpm.engine.impl.core.model.CoreModelElement;
 import org.camunda.bpm.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.camunda.bpm.engine.impl.pvm.process.ActivityImpl;
 import org.camunda.bpm.engine.impl.pvm.process.ScopeImpl;
@@ -18,7 +19,6 @@ import java.util.stream.Collectors;
  * @author Anvar Khasanov
  * student of ITIS KFU
  */
-@Component
 public class MetricsBpmnParseListener extends AbstractBpmnParseListener {
 
     private final Map<Metric, MetricExecutionCountListener> executionListenerMap;
@@ -28,19 +28,27 @@ public class MetricsBpmnParseListener extends AbstractBpmnParseListener {
                 .collect(Collectors.toMap(MetricExecutionCountListener::getMetric, Function.identity()));
     }
 
-    protected void addMetricListener(Metric metric, ActivityImpl activity) {
+    protected void addMetricListener(Metric metric, CoreModelElement coreModelElement) {
         var listener = executionListenerMap.get(metric);
         if (Objects.nonNull(listener)) {
-            activity.addBuiltInListener(listener.getEvent().name(), listener);
+            coreModelElement.addBuiltInListener(listener.getEvent().name(), listener);
         }
     }
 
+    public void parseCallActivity(Element callActivityElement, ScopeImpl scope, ActivityImpl activity) {
+        addMetricListener(Metric.ACTIVITY_DURATION, activity);
+    }
+
     public void parseProcess(Element processElement, ProcessDefinitionEntity processDefinition) {
-//        processDefinition.addBuiltInListener("start", ROOT_PROCESS_INSTANCE_START_COUNTER);
+        addMetricListener(Metric.PROCESS_DURATION, processDefinition);
+    }
+
+    public void parseTask(Element taskElement, ScopeImpl scope, ActivityImpl activity) {
+        processDefinition.addBuiltInListener(Metric.PROCESS_DURATION, );
     }
 
     public void parseStartEvent(Element startEventElement, ScopeImpl scope, ActivityImpl activity) {
-//        this.addListeners(activity);
+//        this.addListeners(activity); // TODO
     }
 
     public void parseExclusiveGateway(Element exclusiveGwElement, ScopeImpl scope, ActivityImpl activity) {
@@ -67,9 +75,7 @@ public class MetricsBpmnParseListener extends AbstractBpmnParseListener {
 //        this.addListeners(activity);
     }
 
-    public void parseTask(Element taskElement, ScopeImpl scope, ActivityImpl activity) {
-//        this.addListeners(activity);
-    }
+
 
     public void parseManualTask(Element manualTaskElement, ScopeImpl scope, ActivityImpl activity) {
 //        this.addListeners(activity);
@@ -80,16 +86,14 @@ public class MetricsBpmnParseListener extends AbstractBpmnParseListener {
     }
 
     public void parseEndEvent(Element endEventElement, ScopeImpl scope, ActivityImpl activity) {
-//        this.addMetricListener(Metric.END_EVENT_COUNT, activity);
+        this.addMetricListener(Metric.END_EVENT_COUNT, activity);
     }
 
     public void parseSubProcess(Element subProcessElement, ScopeImpl scope, ActivityImpl activity) {
 //        this.addListeners(activity);
     }
 
-    public void parseCallActivity(Element callActivityElement, ScopeImpl scope, ActivityImpl activity) {
-//
-    }
+
 
     public void parseSendTask(Element sendTaskElement, ScopeImpl scope, ActivityImpl activity) {
 //        this.addListeners(activity);

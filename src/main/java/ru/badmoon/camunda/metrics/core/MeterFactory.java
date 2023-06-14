@@ -1,9 +1,6 @@
 package ru.badmoon.camunda.metrics.core;
 
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.Gauge;
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.badmoon.camunda.metrics.dictionary.Metric;
@@ -36,8 +33,8 @@ public class MeterFactory {
                 .register(meterRegistry);
     }
 
-    public <T> Gauge buildDurationTimer(Metric metric, List<Tag> tags, T type, ToDoubleFunction<T> func) {
-        return Gauge.builder(metric.getName(), type, func)
+    public <T> Timer buildDurationTimer(Metric metric, List<Tag> tags) {
+        return Timer.builder(metric.getName())
                 .description(metric.getDescription())
                 .tags(tags)
                 .register(meterRegistry);

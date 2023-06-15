@@ -21,30 +21,37 @@ import java.util.stream.Collectors;
  */
 public class MetricsBpmnParseListener extends AbstractBpmnParseListener {
 
-    private final Map<Metric, MetricExecutionCountListener> executionListenerMap;
+    private final Map<Metric, MetricExecutionListener> executionListenerMap;
 
-    public MetricsBpmnParseListener(List<MetricExecutionCountListener> executionListeners) {
+    public MetricsBpmnParseListener(List<MetricExecutionListener> executionListeners) {
         executionListenerMap = executionListeners.stream()
-                .collect(Collectors.toMap(MetricExecutionCountListener::getMetric, Function.identity()));
+                .collect(Collectors.toMap(MetricExecutionListener::getMetric, Function.identity()));
     }
 
     protected void addMetricListener(Metric metric, CoreModelElement coreModelElement) {
         var listener = executionListenerMap.get(metric);
         if (Objects.nonNull(listener)) {
-            coreModelElement.addBuiltInListener(listener.getEvent().name(), listener);
+            coreModelElement.addListener(listener.getEvent().getName(), listener);
         }
     }
 
     public void parseCallActivity(Element callActivityElement, ScopeImpl scope, ActivityImpl activity) {
         addMetricListener(Metric.ACTIVITY_DURATION, activity);
+        addMetricListener(Metric.ACTIVITY_COUNT, activity);
     }
 
     public void parseProcess(Element processElement, ProcessDefinitionEntity processDefinition) {
         addMetricListener(Metric.PROCESS_DURATION, processDefinition);
+        addMetricListener(Metric.PROCESS_COUNT, processDefinition);
+    }
+
+    public void parseServiceTask(Element serviceTaskElement, ScopeImpl scope, ActivityImpl activity) {
+        addMetricListener(Metric.ACTIVITY_DURATION, activity);
+        addMetricListener(Metric.ACTIVITY_COUNT, activity);
     }
 
     public void parseTask(Element taskElement, ScopeImpl scope, ActivityImpl activity) {
-        processDefinition.addBuiltInListener(Metric.PROCESS_DURATION, );
+//        processDefinition.addBuiltInListener(Metric.PROCESS_DURATION, );
     }
 
     public void parseStartEvent(Element startEventElement, ScopeImpl scope, ActivityImpl activity) {
@@ -67,9 +74,6 @@ public class MetricsBpmnParseListener extends AbstractBpmnParseListener {
 //        this.addListeners(activity);
     }
 
-    public void parseServiceTask(Element serviceTaskElement, ScopeImpl scope, ActivityImpl activity) {
-        this.addMetricListener(Metric.END_EVENT_COUNT, activity);
-    }
 
     public void parseBusinessRuleTask(Element businessRuleTaskElement, ScopeImpl scope, ActivityImpl activity) {
 //        this.addListeners(activity);

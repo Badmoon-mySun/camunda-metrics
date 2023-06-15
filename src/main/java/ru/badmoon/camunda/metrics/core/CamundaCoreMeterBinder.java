@@ -4,15 +4,11 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.binder.MeterBinder;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import ru.badmoon.camunda.metrics.dictionary.Metric;
 import ru.badmoon.camunda.metrics.engine.ProcessEngineQueryService;
 import ru.badmoon.camunda.metrics.provider.ProcessDefinitionTagProvider;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.function.ToDoubleFunction;
 
@@ -42,7 +38,7 @@ public class CamundaCoreMeterBinder implements MeterBinder {
 
         var processDefinitionList = queryService.getProcessDefinitions();
 
-        createMetric(Metric.PROCESS_COUNT, List.of(), processDefinitionList, List::size);
+//        createMetric(Metric.PROCESS_COUNT, List.of(), processDefinitionList, List::size);
         createMetric(Metric.INCIDENTS_COUNT, List.of(), queryService,
                 ProcessEngineQueryService::getCountOfActiveIncident);
 
